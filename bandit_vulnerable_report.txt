@@ -1,0 +1,209 @@
+Run started:2026-05-03 20:34:29.261430+00:00
+
+Test results:
+>> Issue: [B403:blacklist] Consider possible security implications associated with pickle module.
+   Severity: Low   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b403-import-pickle
+   Location: .\vulnerable_app.py:30:0
+29	import os
+30	import pickle
+31	import subprocess
+
+--------------------------------------------------
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: .\vulnerable_app.py:31:0
+30	import pickle
+31	import subprocess
+32	from flask import Flask, request, session, render_template_string, redirect, url_for
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'secret123'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: .\vulnerable_app.py:41:17
+40	# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+41	app.secret_key = "secret123"          # VULN: Weak, hardcoded secret key
+42	ADMIN_USERNAME = "admin"
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'admin123'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: .\vulnerable_app.py:43:17
+42	ADMIN_USERNAME = "admin"
+43	ADMIN_PASSWORD = "admin123"           # VULN: Hardcoded admin credentials
+44	
+
+--------------------------------------------------
+>> Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b108_hardcoded_tmp_directory.html
+   Location: .\vulnerable_app.py:46:16
+45	DB_PATH = "students.db"
+46	UPLOAD_FOLDER = "/tmp/uploads"
+47	
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\vulnerable_app.py:96:18
+95	        # [V01] RAW SQL — no parameterization
+96	        query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
+97	        print(f"[DEBUG] Executing query: {query}")   # [V10] Sensitive SQL logged to stdout
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\vulnerable_app.py:137:20
+136	        # VULNERABLE SQL INSERT
+137	        query = f"""
+138	        INSERT INTO users(username,password,role)
+139	        VALUES('{username}','{password}','student')
+140	        """
+141	
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\vulnerable_app.py:193:18
+192	        # [V02] VULNERABLE: Raw f-string SQL
+193	        query = f"SELECT * FROM students WHERE name LIKE '%{name}%'"
+194	        cursor.execute(query)
+
+--------------------------------------------------
+>> Issue: [B605:start_process_with_a_shell] Starting a process with a shell, possible injection detected, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html
+   Location: .\vulnerable_app.py:245:17
+244	        # [V05] VULNERABLE: Direct shell execution — no sanitization
+245	        output = subprocess.getoutput(cmd)
+246	    return render_template_string(ADMIN_HTML, output=output)
+
+--------------------------------------------------
+>> Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b108_hardcoded_tmp_directory.html
+   Location: .\vulnerable_app.py:265:15
+264	    filename = request.args.get('name', 'readme.txt')
+265	    filepath = "/tmp/uploads/" + filename    # [V06] No path sanitization
+266	    try:
+
+--------------------------------------------------
+>> Issue: [B301:blacklist] Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue.
+   Severity: Medium   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b301-pickle
+   Location: .\vulnerable_app.py:297:15
+296	    data = request.data
+297	    user_obj = pickle.loads(data)    # NEVER do this with untrusted input
+298	    return str(user_obj)
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\vulnerable_app.py:320:21
+319	    # [V08] SQL injection + parameter tampering
+320	    cursor.execute(f"UPDATE users SET role='{new_role}' WHERE id={user_id}")
+321	    conn.commit()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\vulnerable_app.py:619:14
+618	
+619	SEARCH_HTML = """<!DOCTYPE html><html lang="en"><head><title>Search — SMS</title>""" + _BASE_STYLE + """</head><body>
+620	<nav>
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\vulnerable_app.py:619:103
+618	
+619	SEARCH_HTML = """<!DOCTYPE html><html lang="en"><head><title>Search — SMS</title>""" + _BASE_STYLE + """</head><body>
+620	<nav>
+621	  <span class="nav-brand">🎓 AcademiSMS</span>
+622	  <a href="/dashboard">Dashboard</a>
+623	  <a href="/logout" style="color:var(--danger)">Logout</a>
+624	</nav>
+625	<div class="main">
+626	  <h2>🔍 Search Students</h2>
+627	  <div class="vuln-note">
+628	    <strong>[V02] SQL Injection</strong> — Try: <code>%' UNION SELECT id,username,password,role,'' FROM users--</code>
+629	  </div>
+630	  <div class="search-box">
+631	    <form method="POST" style="display:flex;gap:10px;flex:1">
+632	      <input type="text" name="name" placeholder="Enter student name..." value="{{ query }}">
+633	      <button class="btn btn-primary btn-sm" type="submit">Search</button>
+634	    </form>
+635	  </div>
+636	  {% if results %}
+637	  <div class="table-wrap">
+638	    <table>
+639	      <tr><th>ID</th><th>Name</th><th>Email</th><th>Grade</th><th style="color:var(--danger)">SSN ⚠️</th></tr>
+640	      {% for r in results %}
+641	      <tr>{% for col in r %}<td>{{ col }}</td>{% endfor %}</tr>
+642	      {% endfor %}
+643	    </table>
+644	  </div>
+645	  {% endif %}
+646	</div></body></html>"""
+647	
+
+--------------------------------------------------
+>> Issue: [B201:flask_debug_true] A Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.
+   Severity: High   Confidence: Medium
+   CWE: CWE-94 (https://cwe.mitre.org/data/definitions/94.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b201_flask_debug_true.html
+   Location: .\vulnerable_app.py:715:4
+714	    # [V10] VULNERABILITY: Debug mode exposes stack traces, interactive debugger, and PIN bypass
+715	    app.run(debug=True, host='0.0.0.0', port=5000)
+
+--------------------------------------------------
+>> Issue: [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-605 (https://cwe.mitre.org/data/definitions/605.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b104_hardcoded_bind_all_interfaces.html
+   Location: .\vulnerable_app.py:715:29
+714	    # [V10] VULNERABILITY: Debug mode exposes stack traces, interactive debugger, and PIN bypass
+715	    app.run(debug=True, host='0.0.0.0', port=5000)
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 565
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 4
+		Medium: 10
+		High: 2
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 5
+		Medium: 7
+		High: 4
+Files skipped (0):

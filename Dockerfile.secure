@@ -1,0 +1,19 @@
+FROM python:3.9-slim
+
+# Create user
+RUN useradd -m secureuser
+
+# Create app folder
+WORKDIR /app
+
+# Create DB directory and give permission
+RUN mkdir /app/data && chown -R secureuser:secureuser /app
+
+COPY . .
+
+RUN pip install -r requirements.txt
+
+# Switch to non-root
+USER secureuser
+
+CMD ["python", "patched_app.py"]
