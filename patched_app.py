@@ -56,7 +56,7 @@ app.config.update(
     MAX_CONTENT_LENGTH=5 * 1024 * 1024,  # 5MB upload limit
 )
 
-DB_PATH = "/app/data/database.db"
+DB_PATH = "database.db"
 UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", os.path.abspath("secure_uploads"))
 ALLOWED_EXTENSIONS = {'pdf', 'txt', 'docx', 'xlsx', 'png', 'jpg', 'jpeg'}
 MAX_CONTENT_LENGTH = 5 * 1024 * 1024
